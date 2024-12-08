@@ -152,4 +152,4 @@ This work is inspired by:
 ## Contact
 For questions or collaboration opportunities, please reach out to:
 - **Namuna Panday** | Department of Physiology, UCLA | namuna@g.ucla.edu
-- **Dibakar Sigdel** | Department of Physiology, UCLA | sigdeldkr@gmail.com
+- **Dibakar Sigdel** | Department of Physiology, UCLA | dibakarsigdel@ucla.com
