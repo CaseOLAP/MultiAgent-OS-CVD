@@ -144,7 +144,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Acknowledgments
 This work is inspired by:
 - Panday et al., "Context-aware Multi-agent AI System to Explore the Oxidative Stress in Cardiovascular Medicine" (2024).
-- Panday et al., "Data-Driven Insights into the Association Between Oxidative Stress and Calcium-Regulating Proteins in Cardiovascular Disease" (2024).
+- [Panday et al., "Data-Driven Insights into the Association Between Oxidative Stress and Calcium-Regulating Proteins in Cardiovascular Disease" (2024)](https://www.mdpi.com/2076-3921/13/11/1420).
 - Google Cloud's Vertex AI and Neo4j for advanced data integration and processing.
 
 ---
