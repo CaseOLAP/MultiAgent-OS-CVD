@@ -1,48 +1,17 @@
-# Core Python Libraries
-numpy==1.24.2
-pandas==1.5.3
-scipy==1.10.1
-matplotlib==3.7.1
-seaborn==0.12.2
-plotly==5.13.1
+# Core LangChain and LLM
+langchain>=0.1.0
+openai>=1.0.0
 
-# Machine Learning and Deep Learning
-tensorflow==2.12.0
-torch==2.0.1
-torch-geometric==2.3.0
-torch-scatter==2.1.1
-sklearn==1.2.2
+# LlamaIndex for semantic document search
+llama-index>=0.9.30
 
-# Graph Management and Processing
-neo4j==5.8.1
-networkx==3.0
-py2neo==2021.2.3
+# Vector search backend
+faiss-cpu>=1.7.4
 
-# APIs and Web Frameworks
-flask==2.2.5
-fastapi==0.99.1
-uvicorn==0.23.0
+# Document loaders
+unstructured
+pdfminer.six
 
-# Google Cloud SDKs
-google-cloud-storage==2.10.0
-google-cloud-bigquery==3.10.0
-google-cloud-aiplatform==1.16.0
-google-auth==2.23.0
-
-# Natural Language Processing
-transformers==4.30.1
-spacy==3.5.1
-nltk==3.8.1
-
-# Visualization Tools
-dash==2.9.1
-dash-cytoscape==0.4.0
-
-# Utilities
-tqdm==4.65.1
-pyyaml==6.0
-requests==2.30.0
-
-# Data Serialization and Manipulation
-protobuf==4.23.2
-jsonschema==4.17.3
+# Optional dev tools
+tqdm
+python-dotenv
