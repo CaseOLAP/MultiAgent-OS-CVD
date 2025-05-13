@@ -36,10 +36,10 @@ Each agent is autonomous, uses domain-specific vector tools, and works with LLM-
 
 | Agent Name       | Role                                                             |
 |------------------|------------------------------------------------------------------|
-| `pubmed-agent`   | Queries biomedical literature to extract ROS–CVD associations    |
+| `pubmed-agent`   | Queries biomedical literature to extract OS–CVD associations    |
 | `protein-agent`  | Identifies relevant proteins and their functional roles          |
 | `pathway-agent`  | Maps involved signaling or metabolic pathways                    |
-| `drug-agent`     | Extracts drugs related to ROS/CVD mechanisms                     |
+| `drug-agent`     | Extracts drugs related to OS/CVD mechanisms                     |
 | `summarizer-agent` | Synthesizes all agent outputs into a final scientific report   |
 
 ---
