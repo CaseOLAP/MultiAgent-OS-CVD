@@ -13,7 +13,7 @@ User Query
 ↓
 PubMed Agent (literature search)
 ↓
-\[Protein Agent | Pathway Agent | Drug Agent]  ← Fan-out
+| [Protein Agent | Pathway Agent | Drug Agent]  ← Fan-out
 ↓
 Summarizer Agent (final scientific report)
 
