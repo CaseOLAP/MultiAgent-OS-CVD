@@ -1,5 +1,5 @@
 from typing import Dict
-from langchain.agents import initialize_agent, AgentExecutor
+from langchain.agents import initialize_agent, AgentExecutor, Tool
 from langchain.chat_models import ChatOpenAI
 from langchain_core.runnables import Runnable
 from tools.llama_tool import create_llama_tool
@@ -20,16 +20,17 @@ Focus on:
 Use your pathway index to validate or expand the answer.
 """
 
-# Tool: LlamaIndex search over curated pathway data (e.g., KEGG, Reactome summaries)
+# ✅ Create the pathway tool from LlamaIndex
 pathway_tool = create_llama_tool(
     name="PathwaySearchTool",
-    description="Search biological pathways implicated in oxidative stress and cardiovascular disease.",
+    description="Use this tool to search biological pathways related to oxidative stress, inflammation, and cardiovascular diseases.",
     index_path="llama_indexes/pathway"
 )
 
-# LangChain AgentExecutor
+# ✅ LangChain agent executor
 def pathway_agent_executor(memory_store: GlobalMemoryStore) -> AgentExecutor:
-    llm = ChatOpenAI(model="gpt-4", temperature=0.3)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3)
+
     return initialize_agent(
         tools=[pathway_tool],
         llm=llm,
@@ -39,7 +40,7 @@ def pathway_agent_executor(memory_store: GlobalMemoryStore) -> AgentExecutor:
         agent_kwargs={"system_message": SYSTEM_PROMPT}
     )
 
-# LangGraph-compatible callable
+# ✅ LangGraph-compatible callable node
 def pathway_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
     agent = pathway_agent_executor(memory_store)
 
@@ -47,6 +48,7 @@ def pathway_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
         pubmed_report = state.get("pubmed_report", "")
         output = agent.invoke({"input": pubmed_report})
 
+        # Save to global memory
         memory_store.save("pathway_agent", output)
 
         return {
@@ -55,6 +57,7 @@ def pathway_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
                 **state.get("agent_outputs", {}),
                 "pathway_agent": output
             },
+            "pathway_report": output,
             "history": state.get("history", []) + [("pathway_agent", output)]
         }
 

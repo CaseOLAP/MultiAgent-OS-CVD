@@ -14,26 +14,27 @@ articles, reviews, and disease associations. Retrieve the most relevant informat
 Be clear, scientific, and evidence-based.
 """
 
-# Create the PubMed semantic search tool from LlamaIndex
+# ✅ Create the PubMed semantic search tool from LlamaIndex
 pubmed_tool = create_llama_tool(
     name="PubMedSearchTool",
-    description="Search literature for associations between ROS, cardiovascular disease, and biological factors.",
+    description="Use this tool to search biomedical literature related to ROS, cardiovascular disease, inflammation, etc.",
     index_path="llama_indexes/pubmed"
 )
 
-# Create the LangChain agent
+# ✅ Create the LangChain agent executor
 def pubmed_agent_executor(memory_store: GlobalMemoryStore) -> AgentExecutor:
-    llm = ChatOpenAI(model="gpt-4", temperature=0.3)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3)
+
     return initialize_agent(
         tools=[pubmed_tool],
         llm=llm,
-        agent_type="openai-functions",
+        agent_type="openai-functions",  # This uses the function-calling agent interface
         memory=get_agent_memory("pubmed", memory_store),
         verbose=True,
         agent_kwargs={"system_message": SYSTEM_PROMPT}
     )
 
-# LangGraph-compatible callable node
+# ✅ LangGraph-compatible callable node
 def pubmed_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
     agent = pubmed_agent_executor(memory_store)
 

@@ -1,6 +1,7 @@
+from pathlib import Path
 from langchain.tools import Tool
-from llama_index import VectorStoreIndex, ServiceContext
-from llama_index.llms import OpenAI
+from llama_index.core import StorageContext, load_index_from_storage, Settings
+from llama_index.llms.openai import OpenAI
 
 def create_llama_tool(name: str, description: str, index_path: str) -> Tool:
     """
@@ -14,13 +15,16 @@ def create_llama_tool(name: str, description: str, index_path: str) -> Tool:
     Returns:
         Tool: LangChain Tool usable inside an AgentExecutor
     """
-    # Load index from disk
-    index = VectorStoreIndex.load_from_disk(index_path)
+    # Load saved index from storage
+    storage_context = StorageContext.from_defaults(persist_dir=index_path)
+    index = load_index_from_storage(storage_context)
+
+    # Set global LLM for querying
+    Settings.llm = OpenAI(model="gpt-3.5-turbo", temperature=0.3)
 
     # Define a query function
     def query_fn(query: str) -> str:
-        service_context = ServiceContext.from_defaults(llm=OpenAI(temperature=0.3))
-        query_engine = index.as_query_engine(service_context=service_context)
+        query_engine = index.as_query_engine()
         response = query_engine.query(query)
         return str(response)
 

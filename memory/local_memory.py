@@ -8,7 +8,7 @@ def get_agent_memory(agent_name: str, memory_store: GlobalMemoryStore) -> Conver
     summarization-based conversation memory, backed by the shared memory store.
     """
     return ConversationSummaryBufferMemory(
-        llm=ChatOpenAI(model="gpt-4", temperature=0.3),
+        llm=ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3),
         memory_key="history",
         input_key="input",
         output_key="output",

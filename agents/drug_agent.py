@@ -1,12 +1,12 @@
 from typing import Dict
-from langchain.agents import initialize_agent, AgentExecutor
+from langchain.agents import initialize_agent, AgentExecutor, Tool
 from langchain.chat_models import ChatOpenAI
 from langchain_core.runnables import Runnable
 from tools.llama_tool import create_llama_tool
 from memory.local_memory import get_agent_memory
 from memory.global_memory import GlobalMemoryStore
 
-# System prompt for the Drug Agent
+# ✅ System prompt for the Drug Agent
 SYSTEM_PROMPT = """
 You are the Drug Agent. Based on the biological summary from the PubMed Agent,
 your job is to identify drugs that influence or modulate the disease mechanism.
@@ -20,16 +20,17 @@ Focus on:
 Use your drug index to support your claims.
 """
 
-# Tool: semantic drug search tool
+# ✅ Create the drug semantic search tool
 drug_tool = create_llama_tool(
     name="DrugSearchTool",
-    description="Search pharmacological compounds related to ROS, protein targets, or CVD pathways.",
+    description="Use this tool to search pharmacological compounds related to ROS, protein targets, or CVD pathways.",
     index_path="llama_indexes/drug"
 )
 
-# LangChain agent executor
+# ✅ Create LangChain agent executor
 def drug_agent_executor(memory_store: GlobalMemoryStore) -> AgentExecutor:
-    llm = ChatOpenAI(model="gpt-4", temperature=0.3)
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3)
+
     return initialize_agent(
         tools=[drug_tool],
         llm=llm,
@@ -39,7 +40,7 @@ def drug_agent_executor(memory_store: GlobalMemoryStore) -> AgentExecutor:
         agent_kwargs={"system_message": SYSTEM_PROMPT}
     )
 
-# Callable node
+# ✅ LangGraph-compatible callable node
 def drug_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
     agent = drug_agent_executor(memory_store)
 
@@ -47,6 +48,7 @@ def drug_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
         pubmed_report = state.get("pubmed_report", "")
         output = agent.invoke({"input": pubmed_report})
 
+        # Save result to global memory
         memory_store.save("drug_agent", output)
 
         return {
@@ -55,6 +57,7 @@ def drug_agent_node(memory_store: GlobalMemoryStore) -> Runnable:
                 **state.get("agent_outputs", {}),
                 "drug_agent": output
             },
+            "drug_report": output,
             "history": state.get("history", []) + [("drug_agent", output)]
         }
 
